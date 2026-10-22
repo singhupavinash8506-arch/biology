@@ -33,18 +33,30 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 API = "https://api.telegram.org/bot{token}/{method}"
 
 
+def _first_env(*names):
+    """First non-empty value among the given variable names."""
+    for n in names:
+        v = os.environ.get(n, "").strip()
+        if v:
+            return v, n
+    return "", None
+
+
 def creds():
-    token = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
-    chat = os.environ.get("TELEGRAM_CHAT_ID", "").strip()
-    missing = [n for n, v in (("TELEGRAM_BOT_TOKEN", token), ("TELEGRAM_CHAT_ID", chat)) if not v]
-    if missing:
-        print("Telegram credentials missing from the environment: " + ", ".join(missing))
+    token, tname = _first_env("TELEGRAM_BOT_TOKEN", "BOT_TOKEN")
+    chat, cname = _first_env("TELEGRAM_CHAT_ID", "CHAT_ID", "ID")
+    if not token or not chat:
+        print("Telegram credentials not found in the environment.")
+        print("\nAccepted variable names (first match wins):")
+        print("    token : TELEGRAM_BOT_TOKEN, BOT_TOKEN")
+        print("    chat  : TELEGRAM_CHAT_ID, CHAT_ID, ID")
         print("\nSet them and re-run, for example:")
-        print("    export TELEGRAM_BOT_TOKEN='123456:ABC-DEF...'")
-        print("    export TELEGRAM_CHAT_ID='987654321'")
+        print("    export BOT_TOKEN='123456:ABC-DEF...'")
+        print("    export ID='987654321'")
         print("\nBot token comes from @BotFather; chat id from @userinfobot.")
         print("Send /start to your bot once, otherwise Telegram blocks the first message.")
         sys.exit(2)
+    print(f"  [telegram] using token from ${tname}, chat id from ${cname}")
     return token, chat
 
 
