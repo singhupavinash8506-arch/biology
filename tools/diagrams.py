@@ -721,7 +721,6 @@ ECOSYS = r"""
 # ------------------------------------------------- Ch 13: biodiversity patterns
 BIODIV = r"""
 <svg viewBox="0 0 330 200" role="img">
-  <text class="lbt" x="4" y="12" fill="#004d40">जैव विविधता के प्रतिरूप एवं संरक्षण</text>
   <!-- latitudinal gradient -->
   <g>
     <rect x="10" y="22" width="26" height="92" rx="3" fill="#b2dfdb" stroke="#00695c" stroke-width=".7"/>
@@ -768,12 +767,12 @@ BIODIV = r"""
     <text class="lbs" x="0" y="124" fill="#004d40">श्रीलंका, हिमालय, इंडो-बर्मा</text>
   </g>
   <!-- the evil quartet -->
-  <rect x="4" y="144" width="322" height="24" rx="3" fill="#fdecea" stroke="#b3261e" stroke-width=".8"/>
-  <text class="lbs" x="10" y="155" fill="#8a1a14" font-weight="800">विलुप्ति के 4 कारण (The Evil Quartet):</text>
-  <text class="lbs" x="10" y="165" fill="#8a1a14">1. आवास की क्षति व विखंडन (सर्वाधिक)  2. अतिदोहन  3. विदेशी जातियों का आक्रमण (नील पर्च, जलकुंभी, पार्थेनियम)  4. सहविलुप्ति</text>
-  <rect x="4" y="172" width="322" height="24" rx="3" fill="#e4f4f1" stroke="#00695c" stroke-width=".8"/>
-  <text class="lbs" x="10" y="183" fill="#004d40" font-weight="800">संरक्षण:</text>
-  <text class="lbs" x="56" y="183" fill="#004d40"><tspan font-weight="700">स्वस्थाने</tspan> — राष्ट्रीय उद्यान, वन्यजीव अभयारण्य, बायोस्फीयर रिजर्व, पवित्र उपवन</text>
-  <text class="lbs" x="10" y="193" fill="#004d40"><tspan font-weight="700">बहिस्थाने</tspan> — चिड़ियाघर, वानस्पतिक उद्यान, बीज बैंक, क्रायोप्रिजर्वेशन (&#8211;196&#176;C) &#183; रेड डाटा बुक = IUCN सूची</text>
+  <rect x="4" y="146" width="322" height="48" rx="3" fill="#fdecea" stroke="#b3261e" stroke-width=".8"/>
+  <text class="lbs" x="10" y="157" fill="#8a1a14" font-weight="800">विलुप्ति के 4 कारण &#8212; The Evil Quartet</text>
+  <text class="lbs" x="10" y="169" fill="#8a1a14">1. आवास की क्षति व विखंडन <tspan font-weight="800">(सर्वाधिक घातक)</tspan></text>
+  <text class="lbs" x="170" y="169" fill="#8a1a14">2. अतिदोहन</text>
+  <text class="lbs" x="10" y="181" fill="#8a1a14">3. विदेशी जातियों का आक्रमण</text>
+  <text class="lbs" x="170" y="181" fill="#8a1a14">4. सहविलुप्ति</text>
+  <text class="lbs" x="10" y="192" fill="#8a1a14">उदा. नील पर्च, जलकुंभी, पार्थेनियम, लैंटाना</text>
 </svg>
 """

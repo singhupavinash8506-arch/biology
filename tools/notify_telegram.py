@@ -129,24 +129,38 @@ def cmd_test(token, chat):
     sys.exit(0 if ok else 1)
 
 
-def cmd_build(token, chat):
+def cmd_build(token, chat, style="modern"):
     sys.path.insert(0, str(ROOT / "tools"))
-    import render
-    from content import CHAPTERS
+    if style == "hw":
+        import render_hw as render
+        from content_hw import CHAPTERS_HW as CHAPTERS
+        label = "हस्तलिखित शैली (handwritten style)"
+    else:
+        import render
+        from content import CHAPTERS
+        label = "आधुनिक शैली (modern style)"
 
     _report("build start", send_message(token, chat,
-        "<b>Build started</b> — UP Board Class 12 Biology (348), सत्र 2026-27\n"
-        f"13 chapters, one coloured A4 sheet each (PNG + PDF)."))
+        f"<b>Build started</b> — UP Board Class 12 Biology (348), सत्र 2026-27\n"
+        f"{label}\n13 chapters, one coloured A4 sheet each (PNG + PDF)."))
 
     done = {"n": 0}
 
+    def _figure_titles(ch):
+        """Chapter dicts differ between the two styles; read figures from either."""
+        if ch.get("diagrams"):
+            return [d["t"] for d in ch["diagrams"]]
+        return [b["t"] for b in ch.get("blocks", []) if b.get("type") == "fig"]
+
     def notify(ch, png, pdf):
         done["n"] += 1
+        unit = ch.get("unit") or f"इकाई {ch.get('unit_no', '')}"
+        figs = _figure_titles(ch)
         cap = (f"<b>[{done['n']}/13] अध्याय {ch['num']}: {ch['hi']}</b>\n"
                f"{ch['en']}\n"
-               f"{ch['unit']} — {ch['unit_name']} ({ch['unit_marks']} अंक)\n"
-               f"चित्र: {', '.join(d['t'] for d in ch['diagrams'])}\n"
-               f"PNG {png.stat().st_size // 1024} KB  ·  PDF {pdf.stat().st_size // 1024} KB")
+               f"{unit} — {ch['unit_name']} ({ch['unit_marks']} अंक)\n"
+               + (f"चित्र: {', '.join(figs)}\n" if figs else "")
+               + f"PNG {png.stat().st_size // 1024} KB  ·  PDF {pdf.stat().st_size // 1024} KB")
         _report(f"ch{ch['num']:02d} photo", send_photo(token, chat, cap, png))
 
     made = render.render(CHAPTERS, notify=notify)
@@ -165,7 +179,12 @@ if __name__ == "__main__":
     g = ap.add_mutually_exclusive_group(required=True)
     g.add_argument("--test", action="store_true", help="send a single test message and exit")
     g.add_argument("--build", action="store_true",
-                   help="render all 13 chapters, notifying after each one")
+                   help="render all 13 modern-style sheets, notifying after each one")
+    g.add_argument("--build-hw", action="store_true",
+                   help="render all 13 handwritten-style sheets, notifying after each one")
     a = ap.parse_args()
     t, c = creds()
-    cmd_test(t, c) if a.test else cmd_build(t, c)
+    if a.test:
+        cmd_test(t, c)
+    else:
+        cmd_build(t, c, "hw" if a.build_hw else "modern")
